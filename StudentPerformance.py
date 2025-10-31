@@ -15,10 +15,33 @@ st.subheader("Dataset: Student Performance Metrics")
 csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3.csv"
 col1, col2, col3, col4 = st.columns(4)
     
-col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa}")
-col2.metric(label="📚 Avg Study Preparation (hrs)", value=f"{avg_prep}")
-col3.metric(label="🎮 Avg Gaming Time (hrs)", value=f"{avg_gaming}")
-col4.metric(label="🏫 Avg Attendance", value=f"{avg_attendance}")
+col1.metric(
+    label="Average CGPA", 
+    value=f"{df['Overall'].mean():.2f}", 
+    help="Represents the average cumulative grade point average (Overall) of students.", 
+    border=True
+)
+
+col2.metric(
+    label="Average Attendance", 
+    value=f"{df['Attendance'].mean():.2f}", 
+    help="Shows the average attendance rate of students in class participation.", 
+    border=True
+)
+
+col3.metric(
+    label="Average Study Preparation", 
+    value=f"{df['Preparation'].mean():.2f}", 
+    help="Average hours students spend on study preparation outside class.", 
+    border=True
+)
+
+col4.metric(
+    label="Average Gaming Time", 
+    value=f"{df['Gaming'].mean():.2f}", 
+    help="Average time students spend on gaming activities daily.", 
+    border=True
+)
 
 # Read dataset directly from GitHub
 law_df = pd.read_csv(csv_url)
