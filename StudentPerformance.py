@@ -14,6 +14,11 @@ st.subheader("Dataset: Student Performance Metrics")
 # Replace this URL with your actual raw CSV file link
 csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3.csv"
 df = pd.read_csv(csv_url)
+
+# Convert numeric columns safely
+for col in ['Overall', 'Attendance', 'Preparation', 'Gaming']:
+    if col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors='coerce')  # convert text -> NaN for safety
 col1, col2, col3, col4 = st.columns(4)
 
     
