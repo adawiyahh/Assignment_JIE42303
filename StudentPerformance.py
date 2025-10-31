@@ -15,9 +15,6 @@ st.subheader("Dataset: Student Performance Metrics")
 csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3.csv"
 col1, col2, col3, col4 = st.columns(4)
 
-# Read dataset directly from GitHub
-law_df = pd.read_csv(csv_url)
-st.dataframe(law_df)
     
 col1.metric(
     label="Average CGPA", 
