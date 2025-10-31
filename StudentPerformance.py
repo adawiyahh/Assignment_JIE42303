@@ -45,5 +45,5 @@ col4.metric(
     border=True
 )
 
-st.dataframe(law_df)
+st.dataframe(df)
 
