@@ -13,6 +13,7 @@ st.subheader("Dataset: Student Performance Metrics")
 # Load dataset from GitHub 
 # Replace this URL with your actual raw CSV file link
 csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3.csv"
+df = pd.read_csv(csv_url)
 col1, col2, col3, col4 = st.columns(4)
 
     
@@ -44,7 +45,5 @@ col4.metric(
     border=True
 )
 
-# Read dataset directly from GitHub
-law_df = pd.read_csv(csv_url)
 st.dataframe(law_df)
 
