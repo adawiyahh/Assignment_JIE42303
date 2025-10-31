@@ -17,6 +17,12 @@ df = pd.read_csv(csv_url)
 # --- Clean column names ---
 df.columns = df.columns.str.strip()
 
+# --- Show unique values before cleaning ---
+st.write("### 🧩 Unique Values Before Cleaning")
+for col in ['Attendance', 'Preparation', 'Gaming']:
+    if col in df.columns:
+        st.write(f"**{col}** unique values →", df[col].unique())
+
 # --- Function to map text responses flexibly ---
 def map_fuzzy(series, mapping_dict):
     series = series.astype(str).str.lower().str.strip()
@@ -30,21 +36,29 @@ if 'Attendance' in df.columns:
     df['Attendance'] = map_fuzzy(df['Attendance'], {
         'poor': 1,
         'occasional': 2,
-        'regular': 3
+        'regular': 3,
+        'good': 3,
+        'average': 2,
+        'low': 1,
     })
 
 if 'Preparation' in df.columns:
     df['Preparation'] = map_fuzzy(df['Preparation'], {
         'low': 1,
         'medium': 2,
-        'high': 3
+        'moderate': 2,
+        'high': 3,
+        'good': 3,
     })
 
 if 'Gaming' in df.columns:
     df['Gaming'] = map_fuzzy(df['Gaming'], {
         'less': 1,
+        'low': 1,
         '1-3': 2,
-        'more': 3
+        'moderate': 2,
+        'more': 3,
+        'high': 3,
     })
 
 # --- Safely convert numeric columns ---
