@@ -14,22 +14,38 @@ st.subheader("Dataset: Student Performance Metrics")
 csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3.csv"
 df = pd.read_csv(csv_url)
 
-# --- Clean column names (just in case) ---
+# --- Clean column names ---
 df.columns = df.columns.str.strip()
 
-# --- Map text categories to numeric values for averaging ---
-attendance_map = {'Poor': 1, 'Occasional': 2, 'Regular': 3}
-prep_map = {'Low': 1, 'Medium': 2, 'High': 3}
-gaming_map = {'Less than 1 hour': 1, '1-3 hours': 2, 'More than 3 hours': 3}
+# --- Function to map text responses flexibly ---
+def map_fuzzy(series, mapping_dict):
+    series = series.astype(str).str.lower().str.strip()
+    mapped = series.copy()
+    for key, val in mapping_dict.items():
+        mapped = mapped.mask(mapped.str.contains(key.lower(), na=False), val)
+    return pd.to_numeric(mapped, errors='coerce')
 
+# --- Apply mapping for categorical text columns ---
 if 'Attendance' in df.columns:
-    df['Attendance'] = df['Attendance'].map(attendance_map)
+    df['Attendance'] = map_fuzzy(df['Attendance'], {
+        'poor': 1,
+        'occasional': 2,
+        'regular': 3
+    })
 
 if 'Preparation' in df.columns:
-    df['Preparation'] = df['Preparation'].map(prep_map)
+    df['Preparation'] = map_fuzzy(df['Preparation'], {
+        'low': 1,
+        'medium': 2,
+        'high': 3
+    })
 
 if 'Gaming' in df.columns:
-    df['Gaming'] = df['Gaming'].map(gaming_map)
+    df['Gaming'] = map_fuzzy(df['Gaming'], {
+        'less': 1,
+        '1-3': 2,
+        'more': 3
+    })
 
 # --- Safely convert numeric columns ---
 for col in ['Overall', 'Attendance', 'Preparation', 'Gaming']:
@@ -42,38 +58,38 @@ col1, col2, col3, col4 = st.columns(4)
 col1.metric(
     label="Average CGPA",
     value=f"{df['Overall'].mean():.2f}" if 'Overall' in df.columns else "N/A",
-    help="Represents the average cumulative grade point average (Overall) of students.",
+    help="Average cumulative grade point average (Overall).",
     border=True
 )
 
 col2.metric(
     label="Average Attendance",
     value=f"{df['Attendance'].mean():.2f}" if 'Attendance' in df.columns else "N/A",
-    help="Shows the average attendance level (1=Poor, 3=Regular).",
+    help="1 = Poor, 2 = Occasional, 3 = Regular.",
     border=True
 )
 
 col3.metric(
     label="Average Study Preparation",
     value=f"{df['Preparation'].mean():.2f}" if 'Preparation' in df.columns else "N/A",
-    help="Average study preparation level (1=Low, 3=High).",
+    help="1 = Low, 2 = Medium, 3 = High.",
     border=True
 )
 
 col4.metric(
     label="Average Gaming Time",
     value=f"{df['Gaming'].mean():.2f}" if 'Gaming' in df.columns else "N/A",
-    help="Average gaming frequency (1=Less than 1 hour, 3=More than 3 hours).",
+    help="1 = <1 hour, 2 = 1–3 hours, 3 = >3 hours daily.",
     border=True
 )
 
-# --- Legend to help interpretation ---
+# --- Legend for user interpretation ---
 st.caption("""
-**Scale Legend:**
+**Scale Legend:**  
 - Attendance → 1=Poor, 2=Occasional, 3=Regular  
 - Study Preparation → 1=Low, 2=Medium, 3=High  
 - Gaming Time → 1=Less than 1 hour, 2=1–3 hours, 3=More than 3 hours
 """)
 
-# --- Show dataset table ---
+# --- Display cleaned dataset ---
 st.dataframe(df)
