@@ -5,6 +5,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 def app():
     st.title("Student Performance")
     st.header("Assignment JIE42303 Scientific Visualization")
@@ -34,3 +35,6 @@ def app():
     st.subheader("Student Dataset")
     st.dataframe(df)
 
+# **Do NOT call app() here**
+# if __name__ == "__main__":
+#     app()
