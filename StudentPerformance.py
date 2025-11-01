@@ -4,6 +4,9 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+def app():
+    st.title("Student Performance")
+
 # Streamlit Page Setup 
 st.set_page_config(page_title="Assignment JIE42303 Scientific Visualization")
 
