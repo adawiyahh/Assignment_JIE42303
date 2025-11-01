@@ -19,19 +19,24 @@ def app():
         st.error(f"Error loading dataset: {e}")
         return
 
-    # Summary Metrics (like the PLO example)
+    # Summary metrics related to academic background
     col1, col2, col3, col4 = st.columns(4)
-    
-    avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
-    avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
-    avg_prep = df['Preparation'].mean() if 'Preparation' in df else 0
-    avg_gaming = df['Gaming'].mean() if 'Gaming' in df else 0
-    
-    col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}", help="Average of all students’ cumulative CGPA", border=True)
-    col2.metric(label="📚 Average Attendance", value=f"{avg_attendance:.1f}", help="Average attendance rate among students", border=True)
-    col3.metric(label="📝 Average Study Preparation", value=f"{avg_prep:.1f}", help="Average study preparation level", border=True)
-    col4.metric(label="🎮 Average Gaming Time", value=f"{avg_gaming:.1f}", help="Average daily gaming hours", border=True)
 
+    avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
+    avg_last_sem = df['Last'].mean() if 'Last' in df else 0
+    avg_hsc = df['HSC'].mean() if 'HSC' in df else 0
+    avg_ssc = df['SSC'].mean() if 'SSC' in df else 0
+
+    col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}",
+                help="Average cumulative CGPA of students", border=True)
+    col2.metric(label="📝 Last Semester Performance", value=f"{avg_last_sem:.2f}",
+                help="Average grade in the last semester", border=True)
+    col3.metric(label="📚 Average HSC Score", value=f"{avg_hsc:.2f}",
+                help="Average HSC (Higher Secondary Certificate) score", border=True)
+    col4.metric(label="📖 Average SSC Score", value=f"{avg_ssc:.2f}",
+                help="Average SSC (Secondary School Certificate) score", border=True)
+
+    st.markdown("---")
     # Display cleaned dataset
     st.subheader("Student Dataset")
     st.dataframe(df)
