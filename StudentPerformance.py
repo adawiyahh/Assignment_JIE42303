@@ -3,28 +3,40 @@ import StudentPerformance
 import socioeconomic_factors
 import behavior_lifestyle
 
+# Page configuration
 st.set_page_config(page_title="Student Dashboard", layout="wide")
+
+# Add Material Symbols font
+st.markdown("""
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+""", unsafe_allow_html=True)
+
+# Initialize session state for page
+if "page" not in st.session_state:
+    st.session_state.page = "Student Performance"
 
 # Sidebar menu title
 st.sidebar.title("Menu")
 
-# Use radio for navigation — all pages always visible
-page = st.sidebar.radio(
-    label="",
-    options=[
-        "🏫 Student Performance",
-        "📊 Socioeconomic Factors",
-        "🗂 Behavior Lifestyle"
-    ]
-)
+# Function to create a menu item with Material icon
+def menu_item(label, icon, key):
+    if st.sidebar.button(
+        f'<span class="material-symbols-outlined" style="vertical-align:middle;">{icon}</span>  {label}',
+        key=key,
+        unsafe_allow_html=True
+    ):
+        st.session_state.page = label
 
-# Load selected page
-if page == "🏫 Student Performance":
+# Sidebar menu items
+menu_item("Student Performance", "analytics", "menu1")
+menu_item("Socioeconomic Factors", "finance_mode", "menu2")
+menu_item("Behavior Lifestyle", "psychology", "menu3")
+
+# Load the selected page
+if st.session_state.page == "Student Performance":
     StudentPerformance.app()
-elif page == "📊 Socioeconomic Factors":
+elif st.session_state.page == "Socioeconomic Factors":
     socioeconomic_factors.app()
-elif page == "🗂 Behavior Lifestyle":
+elif st.session_state.page == "Behavior Lifestyle":
     behavior_lifestyle.app()
-
-
 
