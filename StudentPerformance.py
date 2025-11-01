@@ -19,7 +19,7 @@ col1, col2, col3, col4 = st.columns(4)
 avg_cgpa = df['Overall'].mean() if 'Overall CGPA' in df else 0
 avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
 avg_prep = df['Preparation'].mean() if 'Preparation' in df else 0
-avg_gaming = df['Gaming'].mean() if 'GamingTime' in df else 0
+avg_gaming = df['Gaming'].mean() if 'Gaming' in df else 0
 
 col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}", help="Average of all students’ cumulative CGPA")
 col2.metric(label="📚 Average Attendance", value=f"{avg_attendance:.1f}", help="Average attendance rate among students")
