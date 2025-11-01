@@ -6,23 +6,15 @@ import behavior_lifestyle
 # Page config
 st.set_page_config(page_title="Student Dashboard", layout="wide")
 
-# Sidebar menu
+# Sidebar menu title
 st.sidebar.title("Menu")
-page = st.sidebar.radio(
-    "Select a page",
-    [
-        "🎓 Student Performance",
-        "💰 Socioeconomic Factors",
-        "🧠 Behavior Lifestyle"
-    ]
-)
 
-# Load the selected page
-if page == "🎓 Student Performance":
+# Sidebar buttons for navigation (no dropdown)
+if st.sidebar.button("🏫  Student Performance"):
     StudentPerformance.app()
-elif page == "💰 Socioeconomic Factors":
+elif st.sidebar.button("📊  Socioeconomic Factors"):
     socioeconomic_factors.app()
-elif page == "🧠 Behavior Lifestyle":
+elif st.sidebar.button("🗂  Behavior Lifestyle"):
     behavior_lifestyle.app()
 
 
