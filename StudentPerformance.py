@@ -14,6 +14,14 @@ def app():
     st.title("Student Performance")
     st.subheader("Dataset: Student Performance Metrics")
     st.markdown("---")
+
+    # Objective statement
+    st.markdown(
+        "**Objective Statement:** To analyze the relationship between academic background and student performance. "
+    )
+
+    st.subheader("Dataset: Student Performance Metrics")
+    st.markdown("---")
     
     # Load Dataset
     csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_cleaned.csv"
