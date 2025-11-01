@@ -71,5 +71,11 @@ def app():
     plt.tight_layout()
     st.pyplot(fig)
 
+    # Interpretation Section
+    st.markdown("### Interpretation")
+    st.write("""
+    According to the visualisation, there seems to be a slightly positive correlation between the HSC Score and the overall CGPA, indicating that students who have performed better academically in the past typically have higher university CGPAs.
+    """)
+
 
     
