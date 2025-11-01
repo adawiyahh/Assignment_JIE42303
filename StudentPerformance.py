@@ -68,6 +68,7 @@ def app():
     ax.grid(True)
 
     # Display plot in Streamlit
+    plt.tight_layout()
     st.pyplot(fig)
 
 
