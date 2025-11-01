@@ -19,7 +19,6 @@ def app():
         "**Objective Statement:** To analyze the relationship between academic background and student performance. "
     )
 
-    st.subheader("Dataset: Student Performance Metrics")
     st.markdown("---")
     
     # Load Dataset
