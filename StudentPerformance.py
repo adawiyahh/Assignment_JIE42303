@@ -6,7 +6,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def app():
-    st.markdown("## Assignment JIE42303: Scientific Visualization", unsafe_allow_html=True)
+    st.markdown("""
+        <h2 style='text-decoration: underline;'>
+            Assignment JIE42303: Scientific Visualization
+        </h2>
+    """, unsafe_allow_html=True)
     st.title("Student Performance")
     st.subheader("Dataset: Student Performance Metrics")
     st.markdown("---")
