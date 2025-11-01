@@ -9,7 +9,6 @@ st.set_page_config(page_title="Student Dashboard", layout="wide")
 # Sidebar menu
 st.sidebar.title("Menu")
 page = st.sidebar.radio(
-    "Select a page",
     [
         "🎓 Student Performance",
         "💰 Socioeconomic Factors",
