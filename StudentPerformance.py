@@ -12,7 +12,6 @@ def app():
         </h2>
     """, unsafe_allow_html=True)
     st.title("Student Performance")
-    st.subheader("Dataset: Student Performance Metrics")
     st.markdown("---")
 
     # Objective statement
@@ -50,7 +49,7 @@ def app():
 
     st.markdown("---")
     # Display cleaned dataset
-    st.subheader("Student Dataset")
+    st.subheader("Dataset: Student Performance Metrics")
     st.dataframe(df)
 
     
