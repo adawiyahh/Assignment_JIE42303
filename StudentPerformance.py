@@ -51,4 +51,24 @@ def app():
     st.subheader("Dataset: Student Performance Metrics")
     st.dataframe(df)
 
+
+    st.markdown("---")
+
+    # Title for the first visualization
+    st.markdown("### Visualization 1: HSC vs Overall CGPA")
+
+    st.subheader("Scatter Plot")
+
+    # Create Seaborn scatter plot
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.scatterplot(data=df, x='HSC', y='Overall', color='purple', ax=ax)
+    ax.set_title('Scatter Plot of HSC vs Overall CGPA')
+    ax.set_xlabel('HSC Score')
+    ax.set_ylabel('Overall CGPA')
+    ax.grid(True)
+
+    # Display plot in Streamlit
+    st.pyplot(fig)
+
+
     
