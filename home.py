@@ -9,7 +9,6 @@ page = st.sidebar.selectbox(
     ["Student Performance", "Socioeconomic Insights", "Behavioral Patterns"]
 )
 
-# Function to load a page dynamically
 def load_page(module_name, display_name):
     module = importlib.import_module(module_name)
     if hasattr(module, "app"):
@@ -18,11 +17,9 @@ def load_page(module_name, display_name):
         st.title(display_name)
         st.write("No content found. Please define an `app()` function in this module.")
 
-# Map page names to your existing scripts
 if page == "Student Performance":
     load_page("StudentPerformance", "Student Performance")
 elif page == "Socioeconomic Insights":
     load_page("socioeconomic_factors", "Socioeconomic Insights")
 elif page == "Behavioral Patterns":
     load_page("behavior_lifestyle", "Behavioral Patterns")
-
