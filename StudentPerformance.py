@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def app():
+    st.set_page_config(page_title="Scientific Visualization")
     st.title("Student Performance")
     st.subheader("Dataset: Student Performance Metrics")
     st.markdown("---")
