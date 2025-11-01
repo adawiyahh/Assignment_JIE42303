@@ -16,7 +16,7 @@ df = pd.read_csv(csv_url)
 
 col1, col2, col3, col4 = st.columns(4)
 
-avg_cgpa = df['Overall'].mean() if 'Overall CGPA' in df else 0
+avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
 avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
 avg_prep = df['Preparation'].mean() if 'Preparation' in df else 0
 avg_gaming = df['Gaming'].mean() if 'Gaming' in df else 0
