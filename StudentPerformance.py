@@ -7,7 +7,6 @@ import seaborn as sns
 
 def app():
     st.title("Student Performance")
-    st.header("Assignment JIE42303 Scientific Visualization")
     st.subheader("Dataset: Student Performance Metrics")
     st.markdown("---")
     
