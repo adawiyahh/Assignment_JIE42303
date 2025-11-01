@@ -24,7 +24,7 @@ def app():
     st.markdown("---")
     
     # Load Dataset
-    csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_cleaned.csv"
+    csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_selected_columns1.csv"
     try:
         df = pd.read_csv(csv_url)
     except Exception as e:
