@@ -13,7 +13,11 @@ def app():
     
     # Load Dataset
     csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_cleaned.csv"
-    df = pd.read_csv(csv_url)
+    try:
+        df = pd.read_csv(csv_url)
+    except Exception as e:
+        st.error(f"Error loading dataset: {e}")
+        return
     
     # Metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -29,3 +33,4 @@ def app():
     # Dataset
     st.subheader("Student Dataset")
     st.dataframe(df)
+
