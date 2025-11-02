@@ -105,7 +105,7 @@ def app():
     """)
 
     # Third visualization
-    st.markdown("### Visualization 3: SSC vs Overall CGPA")
+    st.markdown("### Visualization 3: Boxplot of Semester vs Overall CGPA")
 
     st.subheader("Scatter Plot")
 
