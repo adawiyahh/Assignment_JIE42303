@@ -104,6 +104,8 @@ def app():
     This scatter plot shows that the SSC score has little predictive power for academic success because there seems to be a weak positive association between the SSC score and the overall CGPA.
     """)
 
+    st.markdown("---")
+
     # Third visualization
     st.markdown("### Visualization 3: Semester vs Overall CGPA")
 
@@ -136,6 +138,8 @@ def app():
     st.write("""
     Throughout the semesters, the students' **median Overall CGPA** stays high, but performance consistency often **decreases** after Semester 2 (highest median, smallest spread), with **greater variability** and more low-scoring outliers starting in **Semester 6**.
     """)
+
+    st.markdown("---")
 
     # Fourth visualization
     st.markdown("### Visualization 4: Correlation heatmap of HSC, SSC, Last, and Overall")
