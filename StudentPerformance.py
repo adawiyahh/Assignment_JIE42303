@@ -145,7 +145,7 @@ def app():
 
     # Create a correlation heatmap
     fig, ax = plt.subplots(figsize=(10, 6))
-    correlation_matrix = new_df[['HSC', 'SSC', 'Last', 'Overall']].corr()
+    correlation_matrix = df[['HSC', 'SSC', 'Last', 'Overall']].corr()
     sns.heatmap(correlation_matrix, annot=True, cmap='RdPu', fmt=".2f", ax=ax)
     ax.set_title('Correlation Heatmap of Academic Performance Metrics')
     
