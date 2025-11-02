@@ -109,13 +109,15 @@ def app():
 
     st.subheader("Box Plot")
 
-    # Create Seaborn box plot
-    fig, ax = plt.subplots(figsize=(8, 6))
+    # Create the boxplot
+    fig, ax = plt.subplots(figsize=(10, 6))
     sns.boxplot(data=df, x='Semester', y='Overall', color='purple', ax=ax)
     ax.set_title('Boxplot of Semester vs Overall CGPA')
     ax.set_xlabel('Semester')
     ax.set_ylabel('Overall CGPA')
     ax.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
    
     # Display plot in Streamlit
     plt.tight_layout()
