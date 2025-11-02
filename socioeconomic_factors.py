@@ -99,11 +99,6 @@ def app():
     st.markdown("### Visualization 2: Average CGPA by Hometown")
     
     st.subheader("Box plot")
-    
-    # Calculate mean Overall CGPA by Hometown
-    hometown_overall_mean = df.groupby('Hometown')['Overall'].mean().reset_index()
-    
-    st.subheader("Box Plot")
 
     # Create the boxplot
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -144,7 +139,7 @@ def app():
     # Interpretation Section
     st.markdown("### Interpretation")
     st.write("""
-    Both **City** and **Village** students have almost identical** performance consistency and median CGPA, indicating that **hometown has no meaningful effect** on the distribution of academic outcomes.
+    Both **City** and **Village** students have **almost identical** performance consistency and median CGPA, indicating that **hometown has no meaningful effect** on the distribution of academic outcomes.
     """)
 
     st.markdown("---")
@@ -192,34 +187,5 @@ def app():
     st.markdown("---")
 
 
-    # Fourth visualization
-    st.markdown("### Visualization 4: Correlation heatmap of HSC, SSC, Last, and Overall")
-
-    st.subheader("Correlation heatmap")
-
-
-    # Create a correlation heatmap
-    fig, ax = plt.subplots(figsize=(10, 6))
-    correlation_matrix = df[['HSC', 'SSC', 'Last', 'Overall']].corr()
-    sns.heatmap(correlation_matrix, annot=True, cmap='RdPu', fmt=".2f", ax=ax)
-    ax.set_title('Correlation Heatmap of Academic Performance Metrics')
     
-   
-    # Display plot in Streamlit
-    plt.tight_layout()
-    st.pyplot(fig)
-    plt.close(fig)
-
-    # Calculate descriptive statistics for selected academic metrics
-    descriptive_stats = df[['HSC', 'SSC', 'Last', 'Overall']].agg(['mean', 'median', 'std'])
-
-    # Display descriptive statistics in Streamlit
-    st.markdown("### Descriptive Statistics for Selected Academic Performance Metrics")
-    st.dataframe(descriptive_stats.style.format("{:.2f}"))
-    
-    # Interpretation Section
-    st.markdown("### Interpretation")
-    st.write("""
-    The significant correlation of 0.93 between last semester CGPA and overall CGPA is the most important finding.  On the other hand, there is only a small correlation between university CGPA, HSC and SSC results, indicating poor predictive ability.
-    """)
 
