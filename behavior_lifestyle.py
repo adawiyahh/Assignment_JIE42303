@@ -22,37 +22,41 @@ def app():
     st.markdown("---")
     
     # Load Dataset
-    csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_socioeconomic.csv"
+    csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_behavior.csv"
     try:
         df = pd.read_csv(csv_url)
     except Exception as e:
         st.error(f"Error loading dataset: {e}")
         return
     
-    # Summary metrics related to socioeconomic background
+    # Summary metrics related to student lifestyle and activities
     col1, col2, col3, col4 = st.columns(4)
     
+    # Calculate numeric metrics (if they exist in the dataframe)
     avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
     avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
-    avg_income = df['Income'].mean() if 'Income' in df else 0
-    # For hometown, just use a placeholder value or skip calculation to prevent errors
-    hometown_info = "Rural / Urban"  # replace with actual value if needed
+    avg_study_hours = df['Preparation'].mean() if 'Preparation' in df else 0
+    avg_gaming = df['Gaming'].mean() if 'Gaming' in df else 0
+    avg_extra = df['Extra'].mean() if 'Extra' in df else 0
     
+    # Display metrics
     col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}",
                 help="Average cumulative CGPA of students", border=True)
     col2.metric(label="📚 Average Attendance", value=f"{avg_attendance:.1f}",
                 help="Average class attendance of students", border=True)
-    col3.metric(label="💰 Average Family Income", value=f"RM{avg_income:,.0f}",
-                help="Average monthly family income of students", border=True)
-    col4.metric(label="🏘 Hometown Distribution", value=hometown_info,
-                help="Percentage of students from rural vs urban areas", border=True)
+    col3.metric(label="⏰ Average Study Hours", value=f"{avg_study_hours:.1f}",
+                help="Average weekly preparation/study hours of students", border=True)
+    col4.metric(label="🎮 Average Gaming Hours / Extracurriculars", 
+                value=f"Gaming: {avg_gaming:.1f}, Extra: {avg_extra:.1f}",
+                help="Average weekly gaming and extracurricular activity hours", border=True)
     
     st.markdown("---")
     # Display cleaned dataset
-    st.subheader("Dataset: Socioeconomic and Overall Performance")
+    st.subheader("Dataset: Study Habits, Lifestyle, and Academic Performance")
     st.dataframe(df)
     
     st.markdown("---")
+
 
     # First visualization 
     st.markdown("### Visualization 1: Income vs Overall CGPA")
