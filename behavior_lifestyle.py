@@ -59,134 +59,108 @@ def app():
     st.markdown("---")
 
 
-    # First visualization 
-    st.markdown("### Visualization 1: Income vs Overall CGPA")
+    # First visualization
+    st.markdown("### Visualization 1: Gaming Time vs Overall CGPA")
     
     st.subheader("Box Plot")
     
-    # Create the boxplot
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=df, x='Income', y='Overall', color='#FF69B4', ax=ax)
-    ax.set_title('Boxplot of Income vs Overall CGPA')
-    ax.set_xlabel('Income Category')
+    sns.boxplot(data=df, x='Gaming', y='Overall', color='#FF69B4', ax=ax)
+    ax.set_title('Boxplot of Gaming Time vs Overall CGPA')
+    ax.set_xlabel('Gaming Time')
     ax.set_ylabel('Overall CGPA')
     ax.grid(True)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
     
-
-    # Display plot in Streamlit
+    # Replace encoded labels with actual gaming categories if label_encoders exist
+    if 'label_encoders' in locals() and 'Gaming' in label_encoders:
+        gaming_categories = label_encoders['Gaming'].classes_
+        ax.set_xticks(range(len(gaming_categories)))
+        ax.set_xticklabels(gaming_categories, rotation=45, ha='right')
+    
+    plt.tight_layout()
     st.pyplot(fig)
     plt.close(fig)
     
-    # Calculate descriptive statistics for Overall CGPA by Income
-    income_overall_stats = df.groupby('Income')['Overall'].agg(
-        ['mean', 'median', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]
-    )
-    income_overall_stats = income_overall_stats.rename(
-        columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'}
-    )
+    # Descriptive statistics
+    gaming_overall_stats = df.groupby('Gaming')['Overall'].agg(
+        ['mean', 'median', 'std', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]
+    ).rename(columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'})
     
-    # Display statistics in Streamlit
-    st.markdown("### Descriptive Statistics for Overall CGPA by Income Level")
-    st.dataframe(income_overall_stats.style.format("{:.2f}"))
+    st.markdown("### Descriptive Statistics for Overall CGPA by Gaming Time")
+    st.dataframe(gaming_overall_stats.style.format("{:.2f}"))
     
-    # Interpretation Section
     st.markdown("### Interpretation")
     st.write("""
-    With a **consistent median Overall CGPA** (between 3.0 and 3.5 for the majority of income categories, **Income Category 6 (Low)** stands out as having a **significantly lower median** and a narrow performance range.
+    Higher **gaming time** is associated with **lower median Overall CGPA** and **greater inconsistency** in performance, showing a clear **negative trend**.  Students who play video games for **0-1 Hours** do the best, while those who play for **More than 3 Hours** do the worst.
     """)
-
-
     st.markdown("---")
-
-    # Second visualization 
-    st.markdown("### Visualization 2: Average CGPA by Hometown")
     
-    st.subheader("Box plot")
-
-    # Create the boxplot
+    
+    # Second visualization
+    st.markdown("### Visualization 2: Overall CGPA by Preparation Level")
+    
+    st.subheader("Bar Chart")
+    
+    preparation_overall_mean = df.groupby('Preparation')['Overall'].mean().reset_index()
+    
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=df, x='Hometown', y='Overall', color='purple', ax=ax)
-    ax.set_title('Box Plot of Overall CGPA by Hometown')
-    ax.set_xlabel('Hometown')
+    sns.barplot(data=preparation_overall_mean, x='Preparation', y='Overall', color='purple', ax=ax)
+    ax.set_title('Overall CGPA by Preparation Level')
+    ax.set_xlabel('Preparation Level')
     ax.set_ylabel('Overall CGPA')
     
-    # Replace encoded labels with actual hometown names if available
-    if 'label_encoders' in locals() and 'Hometown' in label_encoders:
-        hometown_categories = label_encoders['Hometown'].classes_
-        ax.set_xticks(range(len(hometown_categories)))
-        ax.set_xticklabels(hometown_categories, rotation=45)
+    # Replace encoded labels with actual preparation categories if available
+    if 'label_encoders' in locals() and 'Preparation' in label_encoders:
+        preparation_categories = label_encoders['Preparation'].classes_
+        ax.set_xticks(range(len(preparation_categories)))
+        ax.set_xticklabels(preparation_categories, rotation=45, ha='right')
     
-    ax.grid(True)
     plt.tight_layout()
-    
-    # Display plot in Streamlit
     st.pyplot(fig)
     plt.close(fig)
     
-    # Calculate descriptive statistics for 'Overall' CGPA grouped by 'Hometown'
-    hometown_overall_stats = df.groupby('Hometown')['Overall'].agg([
-        'mean', 'median', 'std',
-        lambda x: x.quantile(0.25),
-        lambda x: x.quantile(0.75)
-    ])
+    # Descriptive statistics
+    preparation_overall_stats = df.groupby('Preparation')['Overall'].agg(['mean', 'median', 'std'])
+    st.markdown("### Descriptive Statistics for Overall CGPA by Preparation Level")
+    st.dataframe(preparation_overall_stats.style.format("{:.2f}"))
     
-    # Rename the quartile columns for clarity
-    hometown_overall_stats = hometown_overall_stats.rename(
-        columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'}
-    )
-    
-    # Display descriptive statistics in Streamlit
-    st.markdown("### Descriptive Statistics for Overall CGPA by Hometown")
-    st.dataframe(hometown_overall_stats.style.format("{:.2f}"))
-    
-    # Interpretation Section
     st.markdown("### Interpretation")
     st.write("""
-    Both **City** and **Village** students have **almost identical** performance consistency and median CGPA, indicating that **hometown has no meaningful effect** on the distribution of academic outcomes.
+    The **mean Overall CGPA steadily increases** with more study time, showing a clear **positive relationship** between **Preparation Level** and academic achievement.  Students studying for **"0-1 Hour"** have the lowest average CGPA about 2.95, while those preparing for **"More than 3 Hours"** have the greatest average CGPA about 3.45.
     """)
-
     st.markdown("---")
-
     
-
-    # Third visualization 
-    st.markdown("### Visualization 3: Distribution of Income Levels")
     
-    st.subheader("Histogram")
+    # Third visualization
+    st.markdown("### Visualization 3: Overall CGPA by Attendance")
     
-    # Get unique income levels from the dataframe
-    income_levels = df['Income'].unique()
+    st.subheader("Bar Chart")
     
-    # Create the histogram
+    attendance_overall_mean = df.groupby('Attendance')['Overall'].mean().reset_index()
+    
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.histplot(
-        data=df,
-        x='Income',
-        bins=len(income_levels),  # use unique values count
-        kde=False,
-        color='#FF69B4',
-        ax=ax
-    )
-    ax.set_title('Distribution of Income Levels')
-    ax.set_xlabel('Income Level')
-    ax.set_ylabel('Frequency')
+    sns.barplot(data=attendance_overall_mean, x='Attendance', y='Overall', color='#FF69B4', ax=ax)
+    ax.set_title('Overall CGPA by Attendance Category')
+    ax.set_xlabel('Attendance')
+    ax.set_ylabel('Overall CGPA')
     
-    # Optional: add tick labels
-    ax.set_xticks(range(len(income_levels)))
-    ax.set_xticklabels(sorted(income_levels), rotation=30)
+    # Replace encoded labels with actual attendance categories if available
+    if 'label_encoders' in locals() and 'Attendance' in label_encoders:
+        attendance_categories = label_encoders['Attendance'].classes_
+        ax.set_xticks(range(len(attendance_categories)))
+        ax.set_xticklabels(attendance_categories, rotation=45, ha='right')
     
     plt.tight_layout()
-    
-    # Display the figure in Streamlit
     st.pyplot(fig)
     plt.close(fig)
     
-    # Interpretation section
+    # Descriptive statistics
+    attendance_overall_stats = df.groupby('Attendance')['Overall'].agg(['mean', 'median', 'std'])
+    st.markdown("### Descriptive Statistics for Overall CGPA by Attendance Category")
+    st.dataframe(attendance_overall_stats.style.format("{:.2f}"))
+    
     st.markdown("### Interpretation")
     st.write("""
-    The **majority of students** are found in just three income groups in the **uneven distribution** visualisation: **Level 5** (Lower Middle), **Level 8** (Upper Middle), and **Level 0** (High).
+    The **mean Overall CGPA continually rises** as attendance percentages increase, showing a strong **positive correlation** between academic performance and **Attendance Category** in this bar chart.  The greatest average CGPA (about 3.55) is attained by students in the **80%-100%** group, while the lowest average (approximately 1.80) is obtained by those with **Below 40** attendance.
     """)
-
     st.markdown("---")
