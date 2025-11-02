@@ -29,7 +29,7 @@ try:
     df = pd.read_csv(csv_url)
 except Exception as e:
     st.error(f"Error loading dataset: {e}")
-    return
+    df = pd.DataFrame()
 
 # Summary metrics related to academic background
 col1, col2, col3, col4 = st.columns(4)
