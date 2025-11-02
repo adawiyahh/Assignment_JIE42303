@@ -156,7 +156,7 @@ def app():
     plt.close(fig)
 
     # Calculate descriptive statistics for selected academic metrics
-    descriptive_stats = new_df[['HSC', 'SSC', 'Last', 'Overall']].agg(['mean', 'median', 'std'])
+    descriptive_stats = df[['HSC', 'SSC', 'Last', 'Overall']].agg(['mean', 'median', 'std'])
 
     # Display descriptive statistics in Streamlit
     st.markdown("### Descriptive Statistics for Selected Academic Performance Metrics")
