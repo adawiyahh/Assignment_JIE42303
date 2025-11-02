@@ -1,34 +1,36 @@
 import streamlit as st
 import StudentPerformance
-import socioeconomic_factors 
+import socioeconomic_factors
 import behavior_lifestyle
 
 # Page configuration
 st.set_page_config(page_title="Student Dashboard", layout="wide")
 
-# Define pages using Material Icons
-student_perf = st.Page(
-    "StudentPerformance.py",
-    title="Student Performance",
-    icon=":material/school:"
+# Sidebar navigation
+st.sidebar.title("Menu")
+
+page = st.sidebar.radio(
+    "Select Page",
+    options=[
+        "Student Performance",
+        "Socioeconomic Factors",
+        "Behavior Lifestyle"
+    ],
+    format_func=lambda x: {
+        "Student Performance": "📊 Student Performance",
+        "Socioeconomic Factors": "💹 Socioeconomic Factors",
+        "Behavior Lifestyle": "🧠 Behavior Lifestyle"
+    }[x]
 )
 
-socio_factors = st.Page(
-    "socioeconomic_factors.py",
-    title="Socioeconomic Factors",
-    icon=":material/finance_chip:"
-)
+# Run the selected page
+if page == "Student Performance":
+    StudentPerformance.app()
+elif page == "Socioeconomic Factors":
+    socioeconomic_factors.app()
+elif page == "Behavior Lifestyle":
+    behavior_lifestyle.app()
 
-behavior_life = st.Page(
-    "behavior_lifestyle.py",
-    title="Behavior Lifestyle",
-    icon=":material/psychology:"
-)
-
-# Create the navigation menu using the page objects
-pages = st.navigation({
-    "Menu": [student_perf, socio_factors, behavior_life]
-})
 
 # Run the navigation
 pages.run()
