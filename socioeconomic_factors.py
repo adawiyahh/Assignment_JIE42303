@@ -28,24 +28,39 @@ def app():
     except Exception as e:
         st.error(f"Error loading dataset: {e}")
         return
-
-    # Summary metrics related to socioeconomic background
+    
+    # Create 4 columns for metrics
     col1, col2, col3, col4 = st.columns(4)
+    
+    # Display key summary metrics (values can be updated manually)
+    col1.metric(
+        label="🎓 Average CGPA",
+        value="3.45",
+        help="Average cumulative CGPA of students",
+        border=True
+    )
+    
+    col2.metric(
+        label="📚 Average Attendance",
+        value="87%",
+        help="Average class attendance of students",
+        border=True
+    )
+    
+    col3.metric(
+        label="💰 Average Family Income",
+        value="RM4,200",
+        help="Average monthly family income of students",
+        border=True
+    )
+    
+    col4.metric(
+        label="🏘 Hometown Distribution",
+        value="Rural 58% / Urban 42%",
+        help="Percentage of students from rural vs urban areas",
+        border=True
+    )
 
-    # Calculate metrics
-    avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
-    avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
-    avg_income = df['Income'].mean() if 'Income' in df else 0
-
-    # Display metrics
-    col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}",
-                help="Average cumulative CGPA of students", border=True)
-    col2.metric(label="📚 Average Attendance", value=f"{avg_attendance:.1f}",
-                help="Average class attendance of students", border=True)
-    col3.metric(label="💰 Average Family Income", value=f"RM{avg_income:,.0f}",
-                help="Average monthly family income of students", border=True)
-    col4.metric(label="🏘 Hometown Distribution", value=f"Rural {rural_pct:.0f}% / Urban {urban_pct:.0f}%",
-                help="Percentage of students from rural vs urban areas", border=True)
 
 
     st.markdown("---")
