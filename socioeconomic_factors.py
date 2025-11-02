@@ -69,13 +69,17 @@ def app():
     plt.xticks(rotation=45)
     plt.tight_layout()
     
+    # Default mapping text (in case label_encoders is missing)
+    mapping_text = "Income Mapping: Not available"
+
     # Add income mapping text box (if label_encoders exist)
     if 'label_encoders' in locals() and 'Income' in label_encoders:
         income_categories = label_encoders['Income'].classes_
         mapping_text = "Income Mapping:\n"
         for i, category in enumerate(income_categories):
             mapping_text += f"{i}: {category}\n"
-
+    
+    # Add the text box to the plot
     ax.text(
         1.02, 0.5, mapping_text,
         transform=ax.transAxes,
@@ -83,6 +87,7 @@ def app():
         verticalalignment='center',
         bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5)
     )
+
 
     # Display plot in Streamlit
     st.pyplot(fig)
