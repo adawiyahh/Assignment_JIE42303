@@ -29,46 +29,29 @@ def app():
         st.error(f"Error loading dataset: {e}")
         return
     
-    # Create 4 columns for metrics
+    # Summary metrics related to socioeconomic background
     col1, col2, col3, col4 = st.columns(4)
     
-    # Display key summary metrics (values can be updated manually)
-    col1.metric(
-        label="🎓 Average CGPA",
-        value="3.45",
-        help="Average cumulative CGPA of students",
-        border=True
-    )
+    avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
+    avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
+    avg_income = df['Income'].mean() if 'Income' in df else 0
+    # For hometown, just use a placeholder value or skip calculation to prevent errors
+    hometown_info = "Rural / Urban"  # replace with actual value if needed
     
-    col2.metric(
-        label="📚 Average Attendance",
-        value="87%",
-        help="Average class attendance of students",
-        border=True
-    )
+    col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}",
+                help="Average cumulative CGPA of students", border=True)
+    col2.metric(label="📚 Average Attendance", value=f"{avg_attendance:.1f}",
+                help="Average class attendance of students", border=True)
+    col3.metric(label="💰 Average Family Income", value=f"RM{avg_income:,.0f}",
+                help="Average monthly family income of students", border=True)
+    col4.metric(label="🏘 Hometown Distribution", value=hometown_info,
+                help="Percentage of students from rural vs urban areas", border=True)
     
-    col3.metric(
-        label="💰 Average Family Income",
-        value="RM4,200",
-        help="Average monthly family income of students",
-        border=True
-    )
-    
-    col4.metric(
-        label="🏘 Hometown Distribution",
-        value="Rural 58% / Urban 42%",
-        help="Percentage of students from rural vs urban areas",
-        border=True
-    )
-
-
-
     st.markdown("---")
     # Display cleaned dataset
     st.subheader("Dataset: Socioeconomic and Overall Performance")
     st.dataframe(df)
-
-
+    
     st.markdown("---")
 
     # First visualization 
