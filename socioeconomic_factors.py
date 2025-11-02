@@ -156,16 +156,29 @@ def app():
     
     st.subheader("Histogram")
     
+    # Get unique income levels from the dataframe
+    income_levels = df['Income'].unique()
+    
     # Create the histogram
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.histplot(data=df, x='Income', bins=len(label_encoders['Income'].classes_), kde=False, color='#FF69B4', ax=ax)
+    sns.histplot(
+        data=df,
+        x='Income',
+        bins=len(income_levels),  # use unique values count
+        kde=False,
+        color='#FF69B4',
+        ax=ax
+    )
     ax.set_title('Distribution of Income Levels')
     ax.set_xlabel('Income Level')
     ax.set_ylabel('Frequency')
     
+    # Optional: add tick labels
+    ax.set_xticks(range(len(income_levels)))
+    ax.set_xticklabels(sorted(income_levels), rotation=30)
     
     plt.tight_layout()
-
+    
     # Display the figure in Streamlit
     st.pyplot(fig)
     plt.close(fig)
