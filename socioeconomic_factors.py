@@ -37,13 +37,6 @@ def app():
     avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
     avg_income = df['Income'].mean() if 'Income' in df else 0
 
-    # Calculate proportion of rural vs urban students (optional metric for background)
-    if 'Hometown' in df:
-        rural_pct = (df['Hometown'] == 'Rural').mean() * 100
-        urban_pct = (df['Hometown'] == 'Urban').mean() * 100
-    else:
-        rural_pct = urban_pct = 0
-
     # Display metrics
     col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}",
                 help="Average cumulative CGPA of students", border=True)
