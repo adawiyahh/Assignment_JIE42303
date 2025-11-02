@@ -186,6 +186,8 @@ def app():
 
     st.markdown("---")
 
-
+# Call app if running directly
+if __name__ == "__main__":
+    app()
     
 
