@@ -105,20 +105,18 @@ def app():
     """)
 
     # Third visualization
-    st.markdown("### Visualization 3: Boxplot of Semester vs Overall CGPA")
+    st.markdown("### Visualization 3: Semester vs Overall CGPA")
 
-    st.subheader("Scatter Plot")
+    st.subheader("Box Plot")
 
-    # Create Seaborn scatter plot
+    # Create Seaborn box plot
     fig, ax = plt.subplots(figsize=(8, 6))
     sns.boxplot(data=df, x='Semester', y='Overall', color='purple', ax=ax)
     ax.set_title('Boxplot of Semester vs Overall CGPA')
     ax.set_xlabel('Semester')
     ax.set_ylabel('Overall CGPA')
     ax.grid(True)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-
+   
     # Display plot in Streamlit
     plt.tight_layout()
     st.pyplot(fig)
