@@ -28,7 +28,7 @@ behavior_life = st.Page(
 # Create the navigation menu
 pages = st.navigation(
     {
-        "Menu": [student_perf, socio_factors, behavior_life]
+        "Menu": [StudentPerformance.py, socioeconomic_factors.py, behavior_lifestyle.py]
     }
 )
 
