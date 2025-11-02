@@ -25,13 +25,14 @@ behavior_life = st.Page(
     icon=":material/psychology:"
 )
 
-# Create the navigation menu
+# Create the navigation menu using the page objects
 pages = st.navigation(
     {
-        "Menu": [StudentPerformance, socioeconomic_factors, behavior_lifestyle]
+        "Menu": [student_perf, socio_factors, behavior_life]  # <-- use the page objects, NOT the modules
     }
 )
 
 # Run the navigation
 pages.run()
+
 
