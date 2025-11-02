@@ -16,11 +16,7 @@ page = st.sidebar.radio(
         "Socioeconomic Factors",
         "Behavior Lifestyle"
     ],
-    format_func=lambda x: {
-        "Student Performance": "📊 Student Performance",
-        "Socioeconomic Factors": "💹 Socioeconomic Factors",
-        "Behavior Lifestyle": "🧠 Behavior Lifestyle"
-    }[x]
+    
 )
 
 # Run the selected page
