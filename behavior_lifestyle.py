@@ -64,28 +64,35 @@ def app():
     
     st.subheader("Box Plot")
     
+    # Ensure columns exist and drop missing values
+if 'Gaming' in df.columns and 'Overall' in df.columns:
+    plot_df = df[['Gaming', 'Overall']].dropna()
+
+    # Convert Gaming to string if needed for categorical plotting
+    plot_df['Gaming'] = plot_df['Gaming'].astype(str)
+
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=df, x='Gaming', y='Overall', color='#FF69B4', ax=ax)
+    sns.boxplot(data=plot_df, x='Gaming', y='Overall', color='#FF69B4', ax=ax)
     ax.set_title('Boxplot of Gaming Time vs Overall CGPA')
     ax.set_xlabel('Gaming Time')
     ax.set_ylabel('Overall CGPA')
     ax.grid(True)
-    
-    # Replace encoded labels with actual gaming categories if label_encoders exist
+
+    # Replace encoded labels if label_encoders exist
     if 'label_encoders' in locals() and 'Gaming' in label_encoders:
         gaming_categories = label_encoders['Gaming'].classes_
         ax.set_xticks(range(len(gaming_categories)))
         ax.set_xticklabels(gaming_categories, rotation=45, ha='right')
-    
+
     plt.tight_layout()
     st.pyplot(fig)
     plt.close(fig)
-    
+
     # Descriptive statistics
-    gaming_overall_stats = df.groupby('Gaming')['Overall'].agg(
+    gaming_overall_stats = plot_df.groupby('Gaming')['Overall'].agg(
         ['mean', 'median', 'std', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]
     ).rename(columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'})
-    
+
     st.markdown("### Descriptive Statistics for Overall CGPA by Gaming Time")
     st.dataframe(gaming_overall_stats.style.format("{:.2f}"))
     
