@@ -30,7 +30,7 @@ def app():
         return
     
     # Summary metrics related to student lifestyle and activities
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     
     # Calculate numeric metrics (if they exist in the dataframe)
     avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
@@ -46,9 +46,10 @@ def app():
                 help="Average class attendance of students", border=True)
     col3.metric(label="⏰ Average Study Hours", value=f"{avg_study_hours:.1f}",
                 help="Average weekly preparation/study hours of students", border=True)
-    col4.metric(label="🎮 Average Gaming Hours / Extracurriculars", 
-                value=f"Gaming: {avg_gaming:.1f}, Extra: {avg_extra:.1f}",
-                help="Average weekly gaming and extracurricular activity hours", border=True)
+    col4.metric(label="🎮 Average Gaming Hours", value=f"{avg_gaming:.1f}",
+                help="Average weekly gaming hours of students", border=True)
+    col5.metric(label="⭐ Average Extracurricular Hours", value=f"{avg_extra:.1f}",
+                help="Average weekly extracurricular activity hours of students", border=True)
     
     st.markdown("---")
     # Display cleaned dataset
