@@ -65,42 +65,45 @@ def app():
     st.subheader("Box Plot")
     
     # Ensure columns exist and drop missing values
-if 'Gaming' in df.columns and 'Overall' in df.columns:
-    plot_df = df[['Gaming', 'Overall']].dropna()
-
-    # Convert Gaming to string if needed for categorical plotting
-    plot_df['Gaming'] = plot_df['Gaming'].astype(str)
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=plot_df, x='Gaming', y='Overall', color='#FF69B4', ax=ax)
-    ax.set_title('Boxplot of Gaming Time vs Overall CGPA')
-    ax.set_xlabel('Gaming Time')
-    ax.set_ylabel('Overall CGPA')
-    ax.grid(True)
-
-    # Replace encoded labels if label_encoders exist
-    if 'label_encoders' in locals() and 'Gaming' in label_encoders:
-        gaming_categories = label_encoders['Gaming'].classes_
-        ax.set_xticks(range(len(gaming_categories)))
-        ax.set_xticklabels(gaming_categories, rotation=45, ha='right')
-
-    plt.tight_layout()
-    st.pyplot(fig)
-    plt.close(fig)
-
-    # Descriptive statistics
-    gaming_overall_stats = plot_df.groupby('Gaming')['Overall'].agg(
-        ['mean', 'median', 'std', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]
-    ).rename(columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'})
-
-    st.markdown("### Descriptive Statistics for Overall CGPA by Gaming Time")
-    st.dataframe(gaming_overall_stats.style.format("{:.2f}"))
+    if 'Gaming' in df.columns and 'Overall' in df.columns:
+        plot_df = df[['Gaming', 'Overall']].dropna()
     
-    st.markdown("### Interpretation")
-    st.write("""
-    Higher **gaming time** is associated with **lower median Overall CGPA** and **greater inconsistency** in performance, showing a clear **negative trend**.  Students who play video games for **0-1 Hours** do the best, while those who play for **More than 3 Hours** do the worst.
-    """)
-    st.markdown("---")
+        # Convert Gaming to string if needed for categorical plotting
+        plot_df['Gaming'] = plot_df['Gaming'].astype(str)
+    
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.boxplot(data=plot_df, x='Gaming', y='Overall', color='#FF69B4', ax=ax)
+        ax.set_title('Boxplot of Gaming Time vs Overall CGPA')
+        ax.set_xlabel('Gaming Time')
+        ax.set_ylabel('Overall CGPA')
+        ax.grid(True)
+
+        # Replace encoded labels if label_encoders exist
+        if 'label_encoders' in locals() and 'Gaming' in label_encoders:
+            gaming_categories = label_encoders['Gaming'].classes_
+            ax.set_xticks(range(len(gaming_categories)))
+            ax.set_xticklabels(gaming_categories, rotation=45, ha='right')
+
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close(fig)
+
+        # Descriptive statistics
+        gaming_overall_stats = plot_df.groupby('Gaming')['Overall'].agg(
+            ['mean', 'median', 'std', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]
+        ).rename(columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'})
+    
+        st.markdown("### Descriptive Statistics for Overall CGPA by Gaming Time")
+        st.dataframe(gaming_overall_stats.style.format("{:.2f}"))
+        
+        st.markdown("### Interpretation")
+        st.write("""
+        Higher **gaming time** is associated with **lower median Overall CGPA** and **greater inconsistency** in performance, showing a clear **negative trend**.  Students who play video games for **0-1 Hours** do the best, while those who play for **More than 3 Hours** do the worst.
+        """)
+        st.markdown("---")
+
+    else:
+    st.warning("Column 'Gaming' or 'Overall' not found in the dataset. Visualization cannot be displayed.")
     
     
     # Second visualization
