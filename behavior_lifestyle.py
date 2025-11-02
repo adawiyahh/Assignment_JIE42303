@@ -103,7 +103,7 @@ def app():
         st.markdown("---")
 
     else:
-    st.warning("Column 'Gaming' or 'Overall' not found in the dataset. Visualization cannot be displayed.")
+        st.warning("Column 'Gaming' or 'Overall' not found in the dataset. Visualization cannot be displayed.")
     
     
     # Second visualization
