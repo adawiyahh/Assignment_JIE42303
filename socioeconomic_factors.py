@@ -22,120 +22,199 @@ def app():
     st.markdown("---")
     
     # Load Dataset
-    csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_selected_columns1%20(1).csv"
+    csv_url = "https://raw.githubusercontent.com/adawiyahh/Assignment_JIE42303/refs/heads/main/ResearchInformation3_socioeconomic.csv"
     try:
         df = pd.read_csv(csv_url)
     except Exception as e:
         st.error(f"Error loading dataset: {e}")
         return
 
-    # Summary metrics related to academic background
+    # Summary metrics related to socioeconomic background
     col1, col2, col3, col4 = st.columns(4)
 
+    # Calculate metrics
     avg_cgpa = df['Overall'].mean() if 'Overall' in df else 0
-    avg_last_sem = df['Last'].mean() if 'Last' in df else 0
-    avg_hsc = df['HSC'].mean() if 'HSC' in df else 0
-    avg_ssc = df['SSC'].mean() if 'SSC' in df else 0
+    avg_attendance = df['Attendance'].mean() if 'Attendance' in df else 0
+    avg_income = df['Income'].mean() if 'Income' in df else 0
 
+    # Calculate proportion of rural vs urban students (optional metric for background)
+    if 'Hometown' in df:
+        rural_pct = (df['Hometown'] == 'Rural').mean() * 100
+        urban_pct = (df['Hometown'] == 'Urban').mean() * 100
+    else:
+        rural_pct = urban_pct = 0
+
+    # Display metrics
     col1.metric(label="🎓 Average CGPA", value=f"{avg_cgpa:.2f}",
                 help="Average cumulative CGPA of students", border=True)
-    col2.metric(label="📝 Last Semester Performance", value=f"{avg_last_sem:.2f}",
-                help="Average grade in the last semester", border=True)
-    col3.metric(label="📚 Average HSC Score", value=f"{avg_hsc:.2f}",
-                help="Average HSC (Higher Secondary Certificate) score", border=True)
-    col4.metric(label="📖 Average SSC Score", value=f"{avg_ssc:.2f}",
-                help="Average SSC (Secondary School Certificate) score", border=True)
+    col2.metric(label="📚 Average Attendance", value=f"{avg_attendance:.1f}",
+                help="Average class attendance of students", border=True)
+    col3.metric(label="💰 Average Family Income", value=f"RM{avg_income:,.0f}",
+                help="Average monthly family income of students", border=True)
+    col4.metric(label="🏘 Hometown Distribution", value=f"Rural {rural_pct:.0f}% / Urban {urban_pct:.0f}%",
+                help="Percentage of students from rural vs urban areas", border=True)
+
 
     st.markdown("---")
     # Display cleaned dataset
-    st.subheader("Dataset: Student Performance Metrics")
+    st.subheader("Dataset: Socioeconomic and Overall Performance")
     st.dataframe(df)
 
 
     st.markdown("---")
 
-    # Title for the first visualization
-    st.markdown("### Visualization 1: HSC vs Overall CGPA")
-
-    st.subheader("Scatter Plot")
-
-    # Create Seaborn scatter plot
-    fig, ax = plt.subplots(figsize=(8, 6))
-    sns.scatterplot(data=df, x='HSC', y='Overall', color='purple', ax=ax)
-    ax.set_title('Scatter Plot of HSC vs Overall CGPA')
-    ax.set_xlabel('HSC Score')
-    ax.set_ylabel('Overall CGPA')
-    ax.grid(True)
-
-    # Display plot in Streamlit
-    plt.tight_layout()
-    st.pyplot(fig)
-    plt.close(fig)
-
-    # Interpretation Section
-    st.markdown("### Interpretation")
-    st.write("""
-    According to the visualisation, there seems to be a slightly positive correlation between the HSC Score and the overall CGPA, indicating that students who have performed better academically in the past typically have higher university CGPAs.
-    """)
-
-    st.markdown("---")
-
-    # Second visualization
-    st.markdown("### Visualization 2: SSC vs Overall CGPA")
-
-    st.subheader("Scatter Plot")
-
-    # Create Seaborn scatter plot
-    fig, ax = plt.subplots(figsize=(8, 6))
-    sns.scatterplot(data=df, x='SSC', y='Overall', color='#FF69B4', ax=ax)
-    ax.set_title('Scatter Plot of SSC vs Overall CGPA')
-    ax.set_xlabel('SSC Score')
-    ax.set_ylabel('Overall CGPA')
-    ax.grid(True)
-
-    # Display plot in Streamlit
-    plt.tight_layout()
-    st.pyplot(fig)
-    plt.close(fig)
-
-    # Interpretation Section
-    st.markdown("### Interpretation")
-    st.write("""
-    This scatter plot shows that the SSC score has little predictive power for academic success because there seems to be a weak positive association between the SSC score and the overall CGPA.
-    """)
-
-    # Third visualization
-    st.markdown("### Visualization 3: Semester vs Overall CGPA")
-
+    # First visualization 
+    st.markdown("### Visualization 1: Income vs Overall CGPA")
+    
     st.subheader("Box Plot")
-
+    
     # Create the boxplot
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.boxplot(data=df, x='Semester', y='Overall', color='purple', ax=ax)
-    ax.set_title('Boxplot of Semester vs Overall CGPA')
-    ax.set_xlabel('Semester')
+    sns.boxplot(data=df, x='Income', y='Overall', color='#FF69B4', ax=ax)
+    ax.set_title('Boxplot of Income vs Overall CGPA')
+    ax.set_xlabel('Income Category')
     ax.set_ylabel('Overall CGPA')
     ax.grid(True)
     plt.xticks(rotation=45)
     plt.tight_layout()
-   
+    
+    # Add income mapping text box (if label_encoders exist)
+    if 'label_encoders' in locals() and 'Income' in label_encoders:
+        income_categories = label_encoders['Income'].classes_
+        mapping_text = "Income Mapping:\n"
+        for i, category in enumerate(income_categories):
+            mapping_text += f"{i}: {category}\n"
+
+    ax.text(
+        1.02, 0.5, mapping_text,
+        transform=ax.transAxes,
+        fontsize=10,
+        verticalalignment='center',
+        bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5)
+    )
+
     # Display plot in Streamlit
-    plt.tight_layout()
     st.pyplot(fig)
     plt.close(fig)
-
-    # Calculate mean, median, and quartiles for Overall CGPA by Semester
-    semester_stats = df.groupby('Semester')['Overall'].describe()
-
+    
+    # Calculate descriptive statistics for Overall CGPA by Income
+    income_overall_stats = df.groupby('Income')['Overall'].agg(
+        ['mean', 'median', lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]
+    )
+    income_overall_stats = income_overall_stats.rename(
+        columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'}
+    )
+    
     # Display statistics in Streamlit
-    st.markdown("### Overall CGPA Statistics by Semester")
-    st.dataframe(semester_stats)
-
+    st.markdown("### Descriptive Statistics for Overall CGPA by Income Level")
+    st.dataframe(income_overall_stats.style.format("{:.2f}"))
+    
     # Interpretation Section
     st.markdown("### Interpretation")
     st.write("""
-    Throughout the semesters, the students' **median Overall CGPA** stays high, but performance consistency often **decreases** after Semester 2 (highest median, smallest spread), with **greater variability** and more low-scoring outliers starting in **Semester 6**.
+    With a **consistent median Overall CGPA** (between 3.0 and 3.5 for the majority of income categories, **Income Category 6 (Low)** stands out as having a **significantly lower median** and a narrow performance range.
     """)
+
+
+    st.markdown("---")
+
+    # Second visualization 
+    st.markdown("### Visualization 2: Average CGPA by Hometown")
+    
+    st.subheader("Box plot")
+    
+    # Calculate mean Overall CGPA by Hometown
+    hometown_overall_mean = df.groupby('Hometown')['Overall'].mean().reset_index()
+    
+    st.subheader("Box Plot")
+
+    # Create the boxplot
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.boxplot(data=df, x='Hometown', y='Overall', color='purple', ax=ax)
+    ax.set_title('Box Plot of Overall CGPA by Hometown')
+    ax.set_xlabel('Hometown')
+    ax.set_ylabel('Overall CGPA')
+    
+    # Replace encoded labels with actual hometown names if available
+    if 'label_encoders' in locals() and 'Hometown' in label_encoders:
+        hometown_categories = label_encoders['Hometown'].classes_
+        ax.set_xticks(range(len(hometown_categories)))
+        ax.set_xticklabels(hometown_categories, rotation=45)
+    
+    ax.grid(True)
+    plt.tight_layout()
+    
+    # Display plot in Streamlit
+    st.pyplot(fig)
+    plt.close(fig)
+    
+    # Calculate descriptive statistics for 'Overall' CGPA grouped by 'Hometown'
+    hometown_overall_stats = df.groupby('Hometown')['Overall'].agg([
+        'mean', 'median', 'std',
+        lambda x: x.quantile(0.25),
+        lambda x: x.quantile(0.75)
+    ])
+    
+    # Rename the quartile columns for clarity
+    hometown_overall_stats = hometown_overall_stats.rename(
+        columns={'<lambda_0>': '25th_percentile', '<lambda_1>': '75th_percentile'}
+    )
+    
+    # Display descriptive statistics in Streamlit
+    st.markdown("### Descriptive Statistics for Overall CGPA by Hometown")
+    st.dataframe(hometown_overall_stats.style.format("{:.2f}"))
+    
+    # Interpretation Section
+    st.markdown("### Interpretation")
+    st.write("""
+    Both **City** and **Village** students have almost identical** performance consistency and median CGPA, indicating that **hometown has no meaningful effect** on the distribution of academic outcomes.
+    """)
+
+    st.markdown("---")
+
+    
+
+    # Third visualization 
+    st.markdown("### Visualization 3: Distribution of Income Levels")
+    
+    st.subheader("Histogram")
+    
+    # Create the histogram
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.histplot(data=df, x='Income', bins=len(label_encoders['Income'].classes_), kde=False, color='#FF69B4', ax=ax)
+    ax.set_title('Distribution of Income Levels')
+    ax.set_xlabel('Income Level')
+    ax.set_ylabel('Frequency')
+    
+    # Add tick labels using the original income categories from label encoder
+    if 'label_encoders' in locals() and 'Income' in label_encoders:
+        income_categories = label_encoders['Income'].classes_
+        ax.set_xticks(range(len(income_categories)))
+        ax.set_xticklabels(income_categories, rotation=30)
+    
+    plt.tight_layout()
+    
+    # Create mapping text for reference
+    mapping_text = "Income Mapping:\n"
+    for i, category in enumerate(income_categories):
+        mapping_text += f"{i}: {category}\n"
+    
+    # Add a text box showing the mapping
+    plt.text(1.02, 0.5, mapping_text, transform=ax.transAxes, fontsize=10,
+             verticalalignment='center', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    
+    # Display the figure in Streamlit
+    st.pyplot(fig)
+    plt.close(fig)
+    
+    # Interpretation section
+    st.markdown("### Interpretation")
+    st.write("""
+    The **majority of students** are found in just three income groups in the **uneven distribution** visualisation: **Level 5** (Lower Middle), **Level 8** (Upper Middle), and **Level 0** (High).
+    """)
+
+    st.markdown("---")
+
 
     # Fourth visualization
     st.markdown("### Visualization 4: Correlation heatmap of HSC, SSC, Last, and Overall")
