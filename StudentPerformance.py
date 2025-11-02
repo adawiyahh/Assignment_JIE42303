@@ -70,6 +70,7 @@ def app():
     # Display plot in Streamlit
     plt.tight_layout()
     st.pyplot(fig)
+    plt.close(fig)
 
     # Interpretation Section
     st.markdown("### Interpretation")
@@ -95,6 +96,7 @@ def app():
     # Display plot in Streamlit
     plt.tight_layout()
     st.pyplot(fig)
+    plt.close(fig)
 
     # Interpretation Section
     st.markdown("### Interpretation")
@@ -120,6 +122,7 @@ def app():
     # Display plot in Streamlit
     plt.tight_layout()
     st.pyplot(fig)
+    plt.close(fig)
 
     # Calculate mean, median, and quartiles for Overall CGPA by Semester
     semester_stats = df.groupby('Semester')['Overall'].describe()
