@@ -1,4 +1,7 @@
 import streamlit as st
+import StudentPerformance
+import socioeconomic_factors 
+import behavior_lifestyle
 
 # Page configuration
 st.set_page_config(page_title="Student Dashboard", layout="wide")
