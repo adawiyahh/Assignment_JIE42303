@@ -174,3 +174,7 @@ def app():
     The **mean Overall CGPA continually rises** as attendance percentages increase, showing a strong **positive correlation** between academic performance and **Attendance Category** in this bar chart.  The greatest average CGPA (about 3.55) is attained by students in the **80%-100%** group, while the lowest average (approximately 1.80) is obtained by those with **Below 40** attendance.
     """)
     st.markdown("---")
+
+# Call app if running directly
+if __name__ == "__main__":
+    app()
